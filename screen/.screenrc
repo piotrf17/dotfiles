@@ -1,0 +1,27 @@
+## screen rc file
+#escape ^``  # use this for head terminals
+escape ^Ww  # use this on headless systems
+startup_message off
+bell_msg ""
+maxwin 22
+vbell off
+defnonblock 5
+defutf8 on
+defscrollback 4096
+autodetach on
+hardstatus alwayslastline
+
+# Set the hardstatus prop on gui terms to set the titlebar/icon title
+termcapinfo xterm*|rxvt*|kterm*|Eterm* hs:ts=\E]0;:fs=\007:ds=\E]0;\007
+
+# set these terminals up to be 'optimal' instead of vt100    
+termcapinfo xterm*|linux*|rxvt*|Eterm* OP
+
+# Change the xterm initialization string from is2=\E[!p\E[?3;4l\E[4l\E>
+# (This fixes the "Aborted because of window size change" konsole symptoms found                                                            
+#  in bug #134198)                                           
+termcapinfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+# sweet status bar
+hardstatus string "%{+b rk}%H%{gk} |%c %{yk}%d.%m.%Y | %= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g} Load: %l %{wk}"
+
