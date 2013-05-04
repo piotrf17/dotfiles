@@ -1,3 +1,5 @@
+emacs/.emacs.d/auto-save-list/*
+emacs/.emacs.d/session.*
 xmonad/.xmonad/xmonad-x86_64-linux
 xmonad/.xmonad/xmonad.errors
 xmonad/.xmonad/xmonad.hi
