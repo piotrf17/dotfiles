@@ -16,7 +16,10 @@ do
     # Extract root file or directory, i.e from ${HOME}/foo/bar, return foo.
     # There must be a nicer way to do this...
     root=`echo ${path} | sed 's|${TARGET}/||' | awk '{split($1, a, "/"); print a[1]}'`
-    path=${HOME}/${root}
+    if [ "${root}" != "" ]
+    then
+      path=${HOME}/${root}   
+    fi
     echo "Backing up existing file/directory: "${path}
     mv ${path} ${path}.original
   done
