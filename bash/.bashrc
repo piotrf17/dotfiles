@@ -102,6 +102,11 @@ if [ -f ~/.bash_aliases.private ]; then
     . ~/.bash_aliases.private
 fi
 
+# Setup any local paths.
+if [ -f ~/.bash_path ]; then
+    . ~/.bash_path
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
