@@ -6,10 +6,16 @@
 TARGET=${HOME}
 
 # Default config packages to install.
-DEFAULT="bash emacs git screen vim"
+DEFAULT="bash emacs git screen vim xmonad"
+
+if [[ -z $1 ]]; then
+  TO_INSTALL=${DEFAULT}
+else
+  TO_INSTALL=$1
+fi
 
 # First, backup any conflicting files.
-for package in ${DEFAULT}
+for package in ${TO_INSTALL}
 do
   for path in `stow -t ${TARGET} -c ${package} 2>&1 | awk '{print $4}'`
   do
@@ -26,7 +32,7 @@ do
 done
 
 # Now, stow our default packages.
-for package in ${DEFAULT}
+for package in ${TO_INSTALL}
 do
   stow -t ${TARGET} ${package}
 done
