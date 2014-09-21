@@ -1,9 +1,16 @@
 #!/bin/bash
-# Use gnu stow to install our config packages.  Any existing conflicting
+# Use xstow to install our config packages.  Any existing conflicting
 # config files are backed up.
 
-# Target installation directory for config packages.
+set -e
+
+CONFIG_ROOT=${HOME}/config/dotfiles
 TARGET=${HOME}
+
+if [ "$(pwd)" != "${CONFIG_ROOT}" ]; then
+  echo "ERROR: Must run install script from ${CONFIG_ROOT}."
+  exit
+fi
 
 # Default config packages to install.
 DEFAULT="bash emacs git screen vim xmonad"
@@ -17,22 +24,17 @@ fi
 # First, backup any conflicting files.
 for package in ${TO_INSTALL}
 do
-  for path in `stow -t ${TARGET} -c ${package} 2>&1 | awk '{print $4}'`
+  for path in `xstow -t ${TARGET} -c ${package} 2>&1 | awk '{print $3}'`
   do
-    # Extract root file or directory, i.e from ${HOME}/foo/bar, return foo.
-    # There must be a nicer way to do this...
-    root=`echo ${path} | sed 's|${TARGET}/||' | awk '{split($1, a, "/"); print a[1]}'`
-    if [ "${root}" != "" ]
-    then
-      path=${HOME}/${root}   
-    fi
-    echo "Backing up existing file/directory: "${path}
-    mv ${path} ${path}.original
+    stowed_path=${TARGET}$(echo ${path} | sed "s|${CONFIG_ROOT}/${package}||")
+    echo "Backing up existing file/directory: "${stowed_path}
+    mv ${stowed_path} ${stowed_path}.original
   done
 done
 
 # Now, stow our default packages.
 for package in ${TO_INSTALL}
 do
-  stow -t ${TARGET} ${package}
+  echo "Installing ${package}"
+  xstow -t ${TARGET} ${package}
 done
