@@ -23,6 +23,9 @@ export HISTSIZE=1000000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# fix minor spelling mistakes in commands
+shopt -s cdspell
+
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
@@ -63,6 +66,9 @@ else
 fi
 unset color_prompt force_color_prompt
 
+# let mutt deal with transparent terminal
+export COLORFGBG="default;default"
+
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
@@ -101,6 +107,11 @@ if [ -f ~/.bash_aliases.private ]; then
     . ~/.bash_aliases.private
 fi
 
+# Setup any local paths.
+if [ -f ~/.bash_path ]; then
+    . ~/.bash_path
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -111,3 +122,4 @@ fi
 # Setup keychain.
 keychain $HOME/.ssh/id_rsa > /dev/null
 source $HOME/.keychain/$HOSTNAME-sh
+
