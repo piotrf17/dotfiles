@@ -39,8 +39,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [ 
   -- use dmenu instead of gnome run
     ((modMask, xK_p), spawn "exe=`dmenu_run -b` && eval \"exec $exe\"")
-  -- TODO(piotrf): logout
---  , ((modMask .|. shiftMask, xK_q), spawn "gnome-session-quit")
+  -- lock screen
+  , ((controlMask .|. mod1Mask, xK_l), spawn "slock")
   -- extra workspaces
   , ((modMask, xK_equal), windows $ W.view "chat")
   , ((modMask .|. shiftMask, xK_equal), windows $ W.shift "chat")
