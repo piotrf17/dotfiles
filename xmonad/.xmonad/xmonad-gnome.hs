@@ -17,7 +17,7 @@ main = do
     dbus <- D.connectSession
     getWellKnownName dbus
     xmonad $ gnomeConfig {
-      workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "chat"],
+      workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "聊天"],
       focusedBorderColor = "DarkBlue"
       , modMask          = mod4Mask -- set the mod key to the windows key
       , borderWidth      = 2
@@ -36,23 +36,28 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- logout of gnome
   , ((modMask .|. shiftMask, xK_q), spawn "gnome-session-quit")
   -- extra workspaces
-  , ((mod4Mask, xK_equal), windows $ W.view "chat")
-  , ((mod4Mask .|. shiftMask, xK_equal), windows $ W.shift "chat")
+  , ((mod4Mask, xK_equal), windows $ W.view "聊天")
+  , ((mod4Mask .|. shiftMask, xK_equal), windows $ W.shift "聊天")
   ]
 
 -- Custom window management.
 myManageHook = composeAll . concat $
   [ [isFullscreen --> doFullFloat]
+  , [title =? "GenPic" --> doFloat]
+  , [title =? "GenView" --> doFloat]
+  , [title =? "Infinipic" --> doFloat]
+  , [title =? "pixeldance" --> doFloat]
   ]
 
 -- A bunch of stuff so that we can output log hook info through dbus.
 prettyPrinter :: D.Client -> PP
 prettyPrinter dbus = defaultPP
     { ppOutput = dbusOutput dbus
-    , ppTitle = pangoSanitize
-    , ppCurrent = pangoColor "green" . wrap "[" "]" . pangoSanitize
-    , ppVisible = pangoColor "yellow" . wrap "(" ")" . pangoSanitize
-    , ppHidden = const ""
+    , ppTitle = const ""
+    , ppCurrent = pangoColor "green" . underline . pangoSanitize
+    , ppVisible = pangoColor "blue" . pangoSanitize
+    , ppHidden = pangoColor "yellow" . pangoSanitize
+    , ppHiddenNoWindows = pangoColor "gray" . pangoSanitize
     , ppUrgent = pangoColor "red"
     , ppLayout = const ""
     , ppSep = " "
@@ -87,3 +92,8 @@ pangoSanitize = foldr sanitize ""
     sanitize '\"' xs = "&quot;" ++ xs
     sanitize '&' xs = "&amp;" ++ xs
     sanitize x xs = x:xs
+    
+underline :: String -> String
+underline = foldr addUnderline ""
+  where
+    addUnderline x xs = x : '\818' : xs
