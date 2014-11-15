@@ -6,15 +6,14 @@
 (defconst emacs-root (concat my-home ".emacs.d/"))
 (defconst emacs-site-lisp "/usr/share/emacs/site-lisp/")
 
-(let ((default-directory emacs-root))
-  (setq load-path (cons emacs-root load-path))
-  (normal-top-level-add-subdirs-to-load-path))
-
-;; Add all the elisp directories under ~/.emacs.d to my load path.
 (defun local-path (p)
-  (add-to-list 'load-path (concat emacs-root p)))
+  (let ((default-directory (concat emacs-root p)))
+    (add-to-list 'load-path default-directory)
+    (normal-top-level-add-subdirs-to-load-path)))
 (defun site-lisp-path (p)
-  (add-to-list 'load-path (concat emacs-site-lisp p)))
+  (let ((default-directory (concat emacs-site-lisp p)))
+    (add-to-list 'load-path default-directory)
+    (normal-top-level-add-subdirs-to-load-path)))
 
 (local-path "libs")      ;; Personal elisp setup stuff
 (local-path "languages") ;; Language-specific configs
