@@ -123,3 +123,12 @@ fi
 keychain $HOME/.ssh/id_rsa > /dev/null
 source $HOME/.keychain/$HOSTNAME-sh
 
+# ugh. Make java work with xmonad.
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# disable touchpad
+synclient TouchPadOff=1
+
+function ankify() {
+  convert "$1" -resize 300x300 "$1"
+}
