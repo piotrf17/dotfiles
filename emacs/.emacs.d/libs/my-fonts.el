@@ -18,5 +18,6 @@
 
 ;; set my startup font
 (set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+(set-fontset-font "fontset-default" '(#xe03b . #xe076) "quickscript")
 
 (provide 'my-fonts)
