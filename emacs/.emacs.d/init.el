@@ -36,4 +36,5 @@
 (load-library "my-scala")
 
 ;; Other tools.
+(load-library "my-ido")
 (load-library "my-org")
