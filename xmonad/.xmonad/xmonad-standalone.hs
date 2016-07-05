@@ -4,7 +4,6 @@ import System.IO
 
 import XMonad
 import XMonad.Actions.UpdatePointer
-import XMonad.Actions.Volume
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
@@ -40,7 +39,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- use dmenu instead of gnome run
     ((modMask, xK_p), spawn "exe=`dmenu_run -b` && eval \"exec $exe\"")
   -- lock screen
-  , ((controlMask .|. mod1Mask, xK_l), spawn "slock")
+  , ((controlMask .|. mod1Mask, xK_l), spawn "gnome-screensaver-command -l")
   -- extra workspaces
   , ((modMask, xK_equal), windows $ W.view "chat")
   , ((modMask .|. shiftMask, xK_equal), windows $ W.shift "chat")
@@ -48,7 +47,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_b), sendMessage ToggleStruts)
 
   -- Volume control for Thinkpad hardware buttons
-  , ((0, 0x1008ff13), raiseVolume 3 >> return ())
-  , ((0, 0x1008ff11), lowerVolume 3 >> return ())
-  , ((0, 0x1008ff12), toggleMute    >> return ())
+  , ((0, 0x1008ff13), spawn "amixer set Master 3+")
+  , ((0, 0x1008ff11), spawn "amixer set Master 3-")
+  , ((0, 0x1008ff12), spawn "amixer -D pulse set Master toggle")
   ]
