@@ -1,5 +1,4 @@
 import qualified Data.Map as M
-import qualified DBus.Client as D
 import System.IO
 
 import XMonad
@@ -13,18 +12,20 @@ import qualified XMonad.StackSet as W
 import XMonad.Util.Run(spawnPipe, runProcessWithInput)
 import System.Taffybar.Hooks.PagerHints
 
+--  xmonad $ ewmh $ pagerHints $ defaultConfig {
+
 main :: IO ()
 main = do
-  xmonad $ ewmh $ pagerHints $ defaultConfig {
+  xmonad $ ewmh $ pagerHints $ docks def {
       workspaces           = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "chat"]
     , focusedBorderColor = "DarkBlue"
     , modMask            = mod4Mask  -- Rebind mod key to the windows key
     , borderWidth        = 2
     , keys               = \c -> myKeys c `M.union` keys defaultConfig c
-    , manageHook         = manageDocks <+> myManageHook <+> manageHook defaultConfig
+    , manageHook         = manageDocks <+> myManageHook <+> manageHook def
     , handleEventHook    = fullscreenEventHook
-    , layoutHook         = avoidStruts $ smartBorders $ layoutHook defaultConfig
-    , startupHook        = spawn "taffybar"
+    , layoutHook         = avoidStruts $ smartBorders $ layoutHook def
+    , terminal           = "gnome-terminal"
     }
 
 
@@ -39,7 +40,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- use dmenu instead of gnome run
     ((modMask, xK_p), spawn "exe=`dmenu_run -b` && eval \"exec $exe\"")
   -- lock screen
-  , ((controlMask .|. mod1Mask, xK_l), spawn "gnome-screensaver-command -l")
+  , ((controlMask .|. mod1Mask, xK_l), spawn "/usr/share/goobuntu-desktop-files/xsecurelock.sh")
   -- extra workspaces
   , ((modMask, xK_equal), windows $ W.view "chat")
   , ((modMask .|. shiftMask, xK_equal), windows $ W.shift "chat")
@@ -47,7 +48,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask, xK_b), sendMessage ToggleStruts)
 
   -- Volume control for Thinkpad hardware buttons
-  , ((0, 0x1008ff13), spawn "amixer set Master 3+")
-  , ((0, 0x1008ff11), spawn "amixer set Master 3-")
-  , ((0, 0x1008ff12), spawn "amixer -D pulse set Master toggle")
+  , ((0, 0x1008ff13), spawn "amixer set Master 3%+")
+  , ((0, 0x1008ff11), spawn "amixer set Master 3%-")
+  , ((0, 0x1008ff12), spawn "amixer set Master toggle")
+  --XF86MonBrightnessDown
+  , ((0, 0x1008ff03), spawn "xbacklight -dec 10")
+  --XF86MonBrightnessUp
+  , ((0, 0x1008ff02), spawn "xbacklight -inc 10")
   ]

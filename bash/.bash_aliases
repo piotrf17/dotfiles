@@ -10,6 +10,7 @@ alias memgrind='valgrind --tool=memcheck --leak-check=yes --leak-resolution=high
 alias callgrind='valgrind --tool=callgrind -v'
 
 # Random tools.
+alias blaze='bazel'
 alias lines='find . -name "*.h" -o -name "*.c" -o -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" | xargs wc -l'
 
 ### Radio Stations ###
