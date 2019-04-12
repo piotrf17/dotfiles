@@ -24,13 +24,8 @@ main = do
     , keys               = \c -> myKeys c `M.union` keys defaultConfig c
     , manageHook         = manageDocks <+> myManageHook <+> manageHook def
     , handleEventHook    = fullscreenEventHook
-<<<<<<< HEAD
-    , layoutHook         = avoidStruts $ smartBorders $ layoutHook defaultConfig
-    , startupHook        = spawn "/usr/local/cabal/bin/taffybar"
-=======
     , layoutHook         = avoidStruts $ smartBorders $ layoutHook def
     , terminal           = "gnome-terminal"
->>>>>>> 3d1ff0d1b02d3c21e10262b77fa87b677a851ec3
     }
 
 
@@ -45,18 +40,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- use dmenu instead of gnome run
     ((modMask, xK_p), spawn "exe=`dmenu_run -b` && eval \"exec $exe\"")
   -- lock screen
-<<<<<<< HEAD
   , ((controlMask .|. mod1Mask, xK_l), spawn "slock")
-=======
-  , ((controlMask .|. mod1Mask, xK_l), spawn "/usr/share/goobuntu-desktop-files/xsecurelock.sh")
->>>>>>> 3d1ff0d1b02d3c21e10262b77fa87b677a851ec3
   -- extra workspaces
   , ((modMask, xK_equal), windows $ W.view "chat")
   , ((modMask .|. shiftMask, xK_equal), windows $ W.shift "chat")
   , ((modMask, xK_q), spawn "killall -9 taffybar-linux-x86_64; xmonad --recompile && xmonad --restart")
   , ((modMask, xK_b), sendMessage ToggleStruts)
-<<<<<<< HEAD
-=======
 
   -- Volume control for Thinkpad hardware buttons
   , ((0, 0x1008ff13), spawn "amixer set Master 3%+")
@@ -66,5 +55,4 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((0, 0x1008ff03), spawn "xbacklight -dec 10")
   --XF86MonBrightnessUp
   , ((0, 0x1008ff02), spawn "xbacklight -inc 10")
->>>>>>> 3d1ff0d1b02d3c21e10262b77fa87b677a851ec3
   ]
