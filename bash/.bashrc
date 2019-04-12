@@ -126,9 +126,18 @@ source $HOME/.keychain/$HOSTNAME-sh
 # ugh. Make java work with xmonad.
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# disable touchpad
-synclient TouchPadOff=1
-
 function ankify() {
   convert "$1" -resize 300x300 "$1"
+}
+
+function venv() {
+  dir=$(pwd)
+  relative_dir=${dir#$HOME/projects}
+  venv_dir=$HOME/venvs$relative_dir
+  if [ -d $venv_dir/bin ]; then
+      echo "Activating $venv_dir"
+      source $venv_dir/bin/activate
+  else
+      echo "Found no venv at $venv_dir!"
+  fi
 }

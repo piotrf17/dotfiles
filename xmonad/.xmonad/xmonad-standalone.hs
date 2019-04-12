@@ -24,7 +24,7 @@ main = do
     , manageHook         = manageDocks <+> myManageHook <+> manageHook defaultConfig
     , handleEventHook    = fullscreenEventHook
     , layoutHook         = avoidStruts $ smartBorders $ layoutHook defaultConfig
-    , startupHook        = spawn "taffybar"
+    , startupHook        = spawn "/usr/local/cabal/bin/taffybar"
     }
 
 
@@ -39,15 +39,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- use dmenu instead of gnome run
     ((modMask, xK_p), spawn "exe=`dmenu_run -b` && eval \"exec $exe\"")
   -- lock screen
-  , ((controlMask .|. mod1Mask, xK_l), spawn "gnome-screensaver-command -l")
+  , ((controlMask .|. mod1Mask, xK_l), spawn "slock")
   -- extra workspaces
   , ((modMask, xK_equal), windows $ W.view "chat")
   , ((modMask .|. shiftMask, xK_equal), windows $ W.shift "chat")
   , ((modMask, xK_q), spawn "killall -9 taffybar-linux-x86_64; xmonad --recompile && xmonad --restart")
   , ((modMask, xK_b), sendMessage ToggleStruts)
-
-  -- Volume control for Thinkpad hardware buttons
-  , ((0, 0x1008ff13), spawn "amixer set Master 3+")
-  , ((0, 0x1008ff11), spawn "amixer set Master 3-")
-  , ((0, 0x1008ff12), spawn "amixer -D pulse set Master toggle")
   ]
