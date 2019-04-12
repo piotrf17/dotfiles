@@ -176,10 +176,10 @@ also guarantees a symbolic link ~/.xsession which points to
   dropbox start
 
   # Launch taffbyar.
-  stack exec --local-bin-path=~/.local/bin/ --resolver=lts-9.17 -- taffybar-piotrf &
+  stack exec --local-bin-path=$HOME/.local/bin/ --resolver=lts-9.17 -- $HOME/.local/bin/taffybar-piotrf &
 
   # Launch xmonad
-  exec ~/.local/bin/xmonad-piotrf > .xmonad.log 2>&1
+  exec $HOME/.local/bin/xmonad-piotrf > .xmonad.log 2>&1
 #+END_SRC
 
 * XMonad config
