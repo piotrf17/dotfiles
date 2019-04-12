@@ -12,6 +12,8 @@ alias callgrind='valgrind --tool=callgrind -v'
 # Random tools.
 alias lines='find . -name "*.h" -o -name "*.c" -o -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" | xargs wc -l'
 
+alias blaze='bazel'  # worked at google too long
+
 ### Radio Stations ###
 # Radio Free Asia
 alias radio_rfa='mplayer mms://a1545.l2130853544.c21308.g.lm.akamaistream.net/D/1545/21308/v0001/reflector:53544 -cache 256'
