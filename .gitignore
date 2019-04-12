@@ -1,7 +1,24 @@
 emacs/.emacs.d/auto-save-list/*
+emacs/.emacs.d/bookmarks
 emacs/.emacs.d/session.*
+
+# Xmonad build files and logs
+xmonad/.xmonad/.stack-work/
 xmonad/.xmonad/xmonad-x86_64-linux
 xmonad/.xmonad/xmonad.errors
 xmonad/.xmonad/xmonad.hi
 xmonad/.xmonad/xmonad.o
 xmonad/.xmonad/xmonad.hs
+xmonad/.xmonad/xmonad.state
+
+# Taffybar build files.
+taffybar/.config/taffybar/.stack-work/
+
+# Ignore generated and tangled files from X.org.
+taffybar/.config/taffybar/stack.yaml
+taffybar/.config/taffybar/taffybar-piotrf.cabal
+xmonad/.xmonad/build
+xmonad/.xmonad/stack.yaml
+xmonad/.xmonad/xmonad-piotrf.cabal
+X.html
+X/.xinitrc

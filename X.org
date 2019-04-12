@@ -1,0 +1,198 @@
+#+TITLE: X11 Setup with XMonad
+
+This is the Emacs org file with my X11 configuration, woven with
+documentation. When changes are made, call =C-c C-v t=
+=(org-babel-tangle)= to regenerate config files.
+
+To regenerate HTML: =C-c C-e h h= =(org-html-export-to-html)=
+
+This is heavily borrowed from a similar configuration by ccrusius
+(https://github.com/ccrusius).
+
+TODO add an automatic comment to each file indicating it is generated
+
+TODO set :tangle-mode globally
+
+* XMonad Stack Setup
+
+Instead of using the apt version of XMonad, we build it using stack.
+
+** Prerequisite
+
+Our build depends on Stack (https://docs.haskellstack.org/en/stable/README/).
+Follow the directions there, or just run:
+
+#+BEGIN_SRC sh
+  curl -sSL https://get.haskellstack.org/ | sh
+#+END_SRC
+
+We must also install some required dependencies via apt:
+TODO fill in required packages!
+
+#+BEGIN_SRC sh
+  sudo apt-get install pkg-config
+#+END_SRC
+
+Ensure that =~/.local/bin= is in our $PATH. In my default configuration,
+this is added to the per-machine =~/.bash_path= file.
+
+** Config Files
+
+Our goal is to build an XMonad executable from our xmonad.hs
+configuration. To do that, we must first provide all necessary
+dependencies. These are specified via the =stack.yaml= file below.
+
+#+BEGIN_SRC :tangle yes :tangle xmonad/.xmonad/stack.yaml :tangle-mode (identity #o444)
+resolver: lts-9.17
+
+packages:
+  - '.'
+
+extra-deps:
+  - gtk-traymanager-0.1.6
+  - taffybar-0.4.6
+
+flags: {}
+
+extra-package-dbs: []
+#+END_SRC
+
+The executable itself is built through this Cabal file, which Stack
+recognizes due to the '.' specification in the =packages:= section
+above. The executable is named =xmonad-piotrf= because I don't want to
+erase the working xmonad when compilation fails.
+
+#+BEGIN_SRC :tangle yes :tangle xmonad/.xmonad/xmonad-piotrf.cabal :tangle-mode (identity #o444)
+name: xmonad-piotrf
+version: 1.0.0.0
+build-type: Simple
+cabal-version: >=1.10
+
+executable xmonad-piotrf
+  main-is: xmonad-standalone.hs
+  build-depends: base, xmonad, xmonad-contrib, X11, containers, taffybar
+  default-language: Haskell2010
+  ghc-options: -Wall -fno-warn-missing-signatures
+  hs-source-dirs: .
+  other-modules:
+#+END_SRC
+
+Finally, we must tell XMonad how to build itself, so that recompile
+works. This is done via a file =~/.xmonad/build=, which XMonad
+natively recognizes (starting with v0.13) and uses if it exists.
+
+#+BEGIN_SRC sh :tangle yes :tangle xmonad/.xmonad/build :tangle-mode (identity #o555)
+  #!/usr/bin/env bash
+  set -eux
+  cd ~/.xmonad
+  stack clean
+  stack build
+  OUT="$(stack path --dist-dir)/build/xmonad-piotrf/xmonad-piotrf"
+  [[ -x "$OUT" ]] && mv -u "$OUT" "$1"
+#+END_SRC
+
+** Install
+
+Once this org file is tangled, run the following to set things up:
+
+#+BEGIN_SRC sh
+  cd ~/.xmonad
+  stack setup
+  stack build
+  stack install xmonad-piotrf
+#+END_SRC
+
+
+* Taffybar Stack Setup
+
+Similar to XMonad, we build taffybar via stack. Ensure that you've
+already completed the "Prerequisites" in that section. First, the
+stack.yaml configuration:
+
+#+BEGIN_SRC :tangle yes :tangle taffybar/.config/taffybar/stack.yaml :tangle-mode (identity #o444)
+resolver: lts-9.17
+
+packages:
+  - '.'
+
+extra-deps:
+  - gtk-traymanager-0.1.6
+  - taffybar-0.4.6
+
+flags: {}
+
+extra-package-dbs: []
+#+END_SRC
+
+Then, the cabal package configuration:
+
+#+BEGIN_SRC :tangle yes :tangle taffybar/.config/taffybar/taffybar-piotrf.cabal :tangle-mode (identity #o444)
+name: taffybar-piotrf
+version: 1.0.0.0
+build-type: Simple
+cabal-version: >=1.10
+
+executable taffybar-piotrf
+  main-is: taffybar.hs
+  build-depends: base, taffybar
+  default-language: Haskell2010
+  ghc-options: -Wall -fno-warn-missing-signatures
+  hs-source-dirs: .
+  other-modules:
+#+END_SRC
+
+Taffybar does not have support for a "build" file like
+XMonad. Instead, we will launch it in our .xinitrc via =stack exec=.
+
+Once this org file is tangled, run the following to set things up:
+
+#+BEGIN_SRC sh
+  cd ~/.config/taffbyar
+  stack setup
+  stack build
+  stack install taffybar-piotrf
+#+END_SRC
+
+
+* Xinit
+
+We specifically write startup to ~/.xinitrc. Our xstow configuration
+also guarantees a symbolic link ~/.xsession which points to
+~/.xinitrc.
+
+#+BEGIN_SRC sh :tangle yes :tangle X/.xinitrc :tangle-mode (identity #o555)
+  #!/usr/bin/env bash
+
+  . ~/.profile  # Necessary for Debian!
+
+  # Merge custom Xresources setup.
+  [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
+  # Rotate xmonad log.
+  [[ -f .xmonad.log ]] && mv .xmonad.log .xmonad.log.0
+  rm -f .xmonad.log
+
+  # Launch dropbox.
+  dropbox start
+
+  # Launch taffbyar.
+  stack exec --local-bin-path=~/.local/bin/ --resolver=lts-9.17 -- taffybar-piotrf &
+
+  # Launch xmonad
+  exec ~/.local/bin/xmonad-piotrf > .xmonad.log 2>&1
+#+END_SRC
+
+* XMonad config
+
+TODO move the config here
+
+Note: to get xbacklight to work correctly on the laptop, I needed to add a file
+=/usr/share/X11/xorg.conf.d/15-intel.conf= with contents:
+
+#+BEGIN_SRC
+Section "Device"
+    Identifier  "Card0"
+    Driver      "intel"
+    Option      "Backlight"  "intel_backlight"
+EndSection
+#+END_SRC
