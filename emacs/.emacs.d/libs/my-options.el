@@ -45,5 +45,8 @@
 (setq make-backup-files t)
 (setq version-control t)
 (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
+(setq delete-old-versions t)  ;; Don't annoy with deletion warnings.
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
 
 (provide 'my-options)
