@@ -1,0 +1,5 @@
+# Use c++17.
+build --cxxopt='-std=c++17'
+
+# Don't create symlinks
+build --symlink_prefix=/

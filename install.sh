@@ -20,7 +20,7 @@ if [ ! -f ${CONFIG_ROOT}/X/.xinitrc ]; then
 fi
 
 # Default config packages to install.
-DEFAULT="bash emacs git screen vim xmonad taffybar"
+DEFAULT="bash bazel emacs git screen vim xmonad taffybar"
 
 if [[ -z $1 ]]; then
   TO_INSTALL=${DEFAULT}
