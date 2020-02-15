@@ -1,5 +1,6 @@
 emacs/.emacs.d/auto-save-list/*
 emacs/.emacs.d/bookmarks
+emacs/.emacs.d/cache
 emacs/.emacs.d/elpa
 emacs/.emacs.d/session.*
 
