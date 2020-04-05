@@ -12,15 +12,8 @@ if [ "$(pwd)" != "${CONFIG_ROOT}" ]; then
   exit
 fi
 
-# Verify that X.org has been tangled (configuration files have been
-# created).
-if [ ! -f ${CONFIG_ROOT}/X/.xinitrc ]; then
-  echo "ERROR: Must first tangle X.org."
-  exit
-fi
-
 # Default config packages to install.
-DEFAULT="bash bazel emacs git screen vim xmonad taffybar"
+DEFAULT="bash bazel emacs git i3 screen vim X"
 
 if [[ -z $1 ]]; then
   TO_INSTALL=${DEFAULT}

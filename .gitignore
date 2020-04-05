@@ -22,5 +22,3 @@ taffybar/.config/taffybar/taffybar-piotrf.cabal
 xmonad/.xmonad/build
 xmonad/.xmonad/stack.yaml
 xmonad/.xmonad/xmonad-piotrf.cabal
-X.html
-X/.xinitrc
