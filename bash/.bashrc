@@ -134,10 +134,18 @@ function venv() {
   dir=$(pwd)
   relative_dir=${dir#$HOME/projects}
   venv_dir=$HOME/venvs$relative_dir
-  if [ -d $venv_dir/bin ]; then
-      echo "Activating $venv_dir"
-      source $venv_dir/bin/activate
-  else
+  if [ ! -d $venv_dir/bin ]; then
       echo "Found no venv at $venv_dir!"
+      read -p "Create a new venv (Y/n)? " -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+	  echo "Creating new venv..."
+	  mkdir -p $venv_dir
+	  python3 -m venv $venv_dir
+      else
+	  return
+      fi
   fi
+  echo "Activating $venv_dir"
+  source $venv_dir/bin/activate
 }
