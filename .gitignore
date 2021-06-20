@@ -3,6 +3,7 @@ emacs/.emacs.d/bookmarks
 emacs/.emacs.d/cache
 emacs/.emacs.d/elpa
 emacs/.emacs.d/session.*
+emacs/.emacs.d/url
 
 # Xmonad build files and logs
 xmonad/.xmonad/.stack-work/

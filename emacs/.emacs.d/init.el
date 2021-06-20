@@ -31,6 +31,7 @@
 (load-library "my-c")
 (load-library "my-c++")
 (load-library "my-javascript")
+(load-library "my-proto")
 (load-library "my-python")
 (load-library "my-scala")
 
